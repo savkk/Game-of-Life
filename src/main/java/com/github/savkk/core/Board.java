@@ -6,9 +6,13 @@ import java.util.Arrays;
 public class Board {
     private Cell[][] board;
     private Cell[][] newStateBoard;
+    private int height;
+    private int width;
 
-    public Board(int x, int y) {
-        board = new Cell[x][y];
+    public Board(int height, int width) {
+        this.height = height;
+        this.width = width;
+        board = new Cell[height][width];
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
                 board[i][j] = new Cell();
@@ -17,7 +21,7 @@ public class Board {
         newStateBoard = Arrays.copyOf(board, board.length);
     }
 
-    public void step() {
+    public Cell[][] step() {
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
                 int neighbours = getNeighboursCount(i, j);
@@ -29,6 +33,7 @@ public class Board {
             }
         }
         board = Arrays.copyOf(newStateBoard, newStateBoard.length);
+        return board;
     }
 
     //     y y y
@@ -47,7 +52,7 @@ public class Board {
                 neighbours++;
             }
         }
-        if (x != 0 && y != board[x].length - 1) {
+        if (x != 0 && y != width - 1) {
             if (board[x - 1][y + 1].isAlive()) {
                 neighbours++;
             }
@@ -57,22 +62,22 @@ public class Board {
                 neighbours++;
             }
         }
-        if (y != board[x].length - 1) {
+        if (y != width - 1) {
             if (board[x][y + 1].isAlive()) {
                 neighbours++;
             }
         }
-        if (x != board.length - 1 && y != 0) {
+        if (x != height - 1 && y != 0) {
             if (board[x + 1][y - 1].isAlive()) {
                 neighbours++;
             }
         }
-        if (x != board.length - 1) {
+        if (x != height - 1) {
             if (board[x + 1][y].isAlive()) {
                 neighbours++;
             }
         }
-        if (x != board.length - 1 && y != board[x].length - 1) {
+        if (x != height - 1 && y != width - 1) {
             if (board[x + 1][y + 1].isAlive()) {
                 neighbours++;
             }
@@ -90,5 +95,13 @@ public class Board {
         void setAlive(boolean alive) {
             isAlive = alive;
         }
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public int getWidth() {
+        return width;
     }
 }
