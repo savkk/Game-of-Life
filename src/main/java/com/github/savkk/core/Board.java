@@ -21,6 +21,19 @@ public class Board {
         newStateBoard = Arrays.copyOf(board, board.length);
     }
 
+    public Cell[][] setCell(int x, int y) {
+        if (x > height || y > width) {
+            return board;
+        }
+        board[x][y].swap();
+        return board;
+    }
+
+    public Cell[][] setCellAndStep(int x, int y) {
+        setCell(x, y);
+        return step();
+    }
+
     public Cell[][] step() {
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
@@ -94,6 +107,10 @@ public class Board {
 
         void setAlive(boolean alive) {
             isAlive = alive;
+        }
+
+        void swap() {
+            isAlive = !isAlive;
         }
     }
 
