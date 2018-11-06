@@ -18,7 +18,7 @@ public class Main {
     private int width = 80;
 
     @Option(name = "-h", aliases = "-height", usage = "height of board")
-    private int height = 30;
+    private int height = 24;
 
     @Option(name = "-f", aliases = "-figure", usage = "initial figure")
     private Figure figure = Figure.RANDOM;

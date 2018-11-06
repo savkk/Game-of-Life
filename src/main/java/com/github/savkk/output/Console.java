@@ -1,33 +1,55 @@
 package com.github.savkk.output;
 
-import com.diogonunes.jcdp.color.ColoredPrinter;
-import com.diogonunes.jcdp.color.api.Ansi;
 import com.github.savkk.core.Board;
+import com.googlecode.lanterna.TextColor;
+import com.googlecode.lanterna.graphics.TextGraphics;
+import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
+import com.googlecode.lanterna.terminal.Terminal;
+
+import java.io.IOException;
 
 public class Console implements Displayable {
-    private ColoredPrinter coloredPrinter = new ColoredPrinter.Builder(1, false)
-            .foreground(Ansi.FColor.WHITE)
-            .background(Ansi.BColor.BLUE).build();
+    private Terminal terminal;
+    private TextGraphics textGraphics;
+
+    public Console() {
+        DefaultTerminalFactory defaultTerminalFactory = new DefaultTerminalFactory();
+        defaultTerminalFactory.setTerminalEmulatorTitle("Game of Life");
+        try {
+            terminal = defaultTerminalFactory.createTerminal();
+            textGraphics = terminal.newTextGraphics();
+            textGraphics.setForegroundColor(TextColor.ANSI.WHITE);
+            textGraphics.setBackgroundColor(TextColor.ANSI.BLUE);
+        } catch (IOException e) {
+            throw new IllegalStateException("Не удалось создать терминал", e);
+        }
+    }
 
     @Override
     public void show(Board board) {
-        StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < board.getHeight(); i++) {
             for (int j = 0; j < board.getWidth(); j++) {
                 if (board.isAlive(i, j)) {
-                    stringBuilder.append("■");
+                    textGraphics.putString(j, i, "■");
                 } else {
-                    stringBuilder.append("□");
+                    textGraphics.putString(j, i, "□");
                 }
             }
-            stringBuilder.append(System.lineSeparator());
         }
-        coloredPrinter.clear();
-        coloredPrinter.println(stringBuilder.toString());
+        try {
+            terminal.flush();
+        } catch (IOException e) {
+            throw new IllegalStateException("Не удалось вывести текст в терминал", e);
+        }
     }
 
     @Override
     public void finish() {
-        coloredPrinter.println("Everybody died!");
+        try {
+            terminal.clearScreen();
+        } catch (IOException e) {
+            throw new IllegalStateException("Не удалось очистить окно терминала", e);
+        }
+        textGraphics.putString(0, 0, "Everybody died!");
     }
 }
