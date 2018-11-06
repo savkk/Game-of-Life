@@ -2,7 +2,6 @@ package com.github.savkk;
 
 import com.github.savkk.core.Board;
 import com.github.savkk.core.GameOfLife;
-import com.github.savkk.output.Console;
 import com.github.savkk.output.Displayable;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
@@ -33,16 +32,22 @@ public class Main {
     }
 
     public enum Output {
-        CONSOLE(new Console());
+        CONSOLE("com.github.savkk.output.Console");
 
-        private Displayable displayable;
+        private String outputClass;
 
-        Output(Displayable output) {
-            this.displayable = output;
+        Output(String outputClass) {
+            this.outputClass = outputClass;
         }
 
         public Displayable getDisplayable() {
-            return displayable;
+            Displayable o;
+            try {
+                o = (Displayable) Class.forName(this.outputClass).newInstance();
+            } catch (Exception e) {
+                throw new IllegalStateException("Что-то пошло не так", e);
+            }
+            return o;
         }
     }
 }
