@@ -133,6 +133,5 @@ public class Board {
         void swap() {
             isAlive = !isAlive;
         }
-
     }
 }
