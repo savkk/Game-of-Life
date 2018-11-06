@@ -18,6 +18,8 @@ public class Console implements Displayable {
         try {
             terminal = defaultTerminalFactory.createTerminal();
             textGraphics = terminal.newTextGraphics();
+            terminal.clearScreen();
+            terminal.setCursorVisible(false);
             textGraphics.setForegroundColor(TextColor.ANSI.WHITE);
             textGraphics.setBackgroundColor(TextColor.ANSI.BLUE);
         } catch (IOException e) {
