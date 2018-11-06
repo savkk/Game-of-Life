@@ -4,6 +4,7 @@ package com.github.savkk.core;
 import java.util.Arrays;
 
 public class Board {
+    private boolean isEmpty;
     private Cell[][] board;
     private Cell[][] newStateBoard;
     private int height;
@@ -21,11 +22,11 @@ public class Board {
         newStateBoard = Arrays.copyOf(board, board.length);
     }
 
-    public Cell[][] setCell(int x, int y) {
-        if (x > height || y > width) {
+    public Cell[][] setCell(int height, int width) {
+        if (height > this.height || width > this.width) {
             return board;
         }
-        board[x][y].swap();
+        board[height][width].swap();
         return board;
     }
 
@@ -35,6 +36,7 @@ public class Board {
     }
 
     public Cell[][] step() {
+        isEmpty = true;
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
                 int neighbours = getNeighboursCount(i, j);
@@ -42,7 +44,9 @@ public class Board {
                     newStateBoard[i][j].setAlive(true);
                 } else if (neighbours < 2 || neighbours > 3) {
                     newStateBoard[i][j].setAlive(false);
+                    continue;
                 }
+                isEmpty = false;
             }
         }
         board = Arrays.copyOf(newStateBoard, newStateBoard.length);
@@ -98,7 +102,24 @@ public class Board {
         return neighbours;
     }
 
+    public boolean isAlive(int height, int width) {
+        return board[height][width].isAlive();
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public boolean isEmpty() {
+        return isEmpty;
+    }
+
     private class Cell {
+
         private boolean isAlive = false;
 
         boolean isAlive() {
@@ -112,13 +133,6 @@ public class Board {
         void swap() {
             isAlive = !isAlive;
         }
-    }
 
-    public int getHeight() {
-        return height;
-    }
-
-    public int getWidth() {
-        return width;
     }
 }
