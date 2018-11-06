@@ -1,6 +1,7 @@
 package com.github.savkk;
 
 import com.github.savkk.core.Board;
+import com.github.savkk.core.Figure;
 import com.github.savkk.core.GameOfLife;
 import com.github.savkk.output.Displayable;
 import org.kohsuke.args4j.CmdLineParser;
@@ -16,8 +17,11 @@ public class Main {
     @Option(name = "-w", aliases = "-width", usage = "width of board")
     private int width = 80;
 
-    @Option(name = "-h", aliases = "height", usage = "height of board")
+    @Option(name = "-h", aliases = "-height", usage = "height of board")
     private int height = 30;
+
+    @Option(name = "-f", aliases = "-figure", usage = "initial figure")
+    private Figure figure = Figure.RANDOM;
 
     public static void main(String[] args) {
         Main main = new Main();
@@ -27,7 +31,7 @@ public class Main {
 
         Board board = new Board(main.height, main.width);
         GameOfLife gameOfLife = new GameOfLife(main.output.getDisplayable(), board, main.stepTime);
-        gameOfLife.randomFirstGeneration();
+        gameOfLife.setInitialFigure(main.figure);
         gameOfLife.run();
     }
 

@@ -27,12 +27,24 @@ public final class GameOfLife {
     }
 
 
-    public void randomFirstGeneration() {
+    public void randomInitial() {
         for (int i = 0; i < board.getHeight(); i++) {
             for (int j = 0; j < board.getWidth(); j++) {
                 if (Math.random() <= 0.3) {
                     board.setCell(i, j);
                 }
+            }
+        }
+    }
+
+    public void setInitialFigure(Figure figure) {
+        switch (figure) {
+            case RANDOM: {
+                randomInitial();
+                break;
+            }
+            case GLIDER: {
+
             }
         }
     }
