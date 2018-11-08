@@ -3,6 +3,7 @@ package com.github.savkk;
 import com.github.savkk.core.Board;
 import com.github.savkk.core.Figure;
 import com.github.savkk.core.GameOfLife;
+import com.github.savkk.output.Console;
 import com.github.savkk.output.Displayable;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
@@ -36,22 +37,20 @@ public class Main {
     }
 
     public enum Output {
-        CONSOLE("com.github.savkk.output.Console");
+        CONSOLE(Console.class);
 
-        private String outputClass;
+        private Class<? extends Displayable> outputClass;
 
-        Output(String outputClass) {
+        Output(Class<? extends Displayable> outputClass) {
             this.outputClass = outputClass;
         }
 
         public Displayable getDisplayable() {
-            Displayable o;
             try {
-                o = (Displayable) Class.forName(this.outputClass).newInstance();
+                return this.outputClass.newInstance();
             } catch (Exception e) {
                 throw new IllegalStateException("Что-то пошло не так", e);
             }
-            return o;
         }
     }
 }
