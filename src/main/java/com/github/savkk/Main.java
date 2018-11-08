@@ -5,6 +5,7 @@ import com.github.savkk.core.Figure;
 import com.github.savkk.core.GameOfLife;
 import com.github.savkk.output.Console;
 import com.github.savkk.output.Displayable;
+import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 
@@ -24,10 +25,11 @@ public class Main {
     @Option(name = "-f", aliases = "-figure", usage = "initial figure")
     private Figure figure = Figure.RANDOM;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws CmdLineException {
         Main main = new Main();
-        CmdLineParser cmdLineParser = new CmdLineParser(main);
 
+        CmdLineParser cmdLineParser = new CmdLineParser(main);
+        cmdLineParser.parseArgument(args);
         cmdLineParser.printUsage(System.err);
 
         Board board = new Board(main.height, main.width);
