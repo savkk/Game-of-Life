@@ -30,7 +30,7 @@ public final class GameOfLife {
     public void randomInitial() {
         for (int i = 0; i < board.getHeight(); i++) {
             for (int j = 0; j < board.getWidth(); j++) {
-                if (Math.random() <= 0.3) {
+                if (Math.random() <= 0.1) {
                     board.setCell(i, j);
                 }
             }

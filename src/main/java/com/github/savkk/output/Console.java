@@ -20,8 +20,6 @@ public class Console implements Displayable {
             textGraphics = terminal.newTextGraphics();
             terminal.clearScreen();
             terminal.setCursorVisible(false);
-            textGraphics.setForegroundColor(TextColor.ANSI.WHITE);
-            textGraphics.setBackgroundColor(TextColor.ANSI.BLUE);
         } catch (IOException e) {
             throw new IllegalStateException("Не удалось создать терминал", e);
         }
@@ -32,9 +30,11 @@ public class Console implements Displayable {
         for (int i = 0; i < board.getHeight(); i++) {
             for (int j = 0; j < board.getWidth(); j++) {
                 if (board.isAlive(i, j)) {
-                    textGraphics.putString(j, i, "■");
+                    textGraphics.setBackgroundColor(TextColor.ANSI.BLACK);
+                    textGraphics.putString(j, i, " ");
                 } else {
-                    textGraphics.putString(j, i, "□");
+                    textGraphics.setBackgroundColor(TextColor.ANSI.WHITE);
+                    textGraphics.putString(j, i, " ");
                 }
             }
         }
